@@ -12,31 +12,32 @@ function imageMode(color) {
     image3.src = `img/undraw_conceptual_idea_${color}.svg`;
 }
 
-function darkMode(){
-    navigation.style.backgroundColor = 'rgb(0 0 0 / 50%)';
-    textBox.style.backgroundColor = 'rgb(255 255 255 / 50%)';
-    toggleIcon.children[0].textContent = 'Dark mode';
-    toggleIcon.children[1].classList.replace('fa-sun', 'fa-moon');
-    imageMode('dark');
-};
+function setStyles(isDark) {
+    const backgroundColor = isDark ? 'rgb(0 0 0 / 50%)' : 'rgb(255 255 255/ 50%)';
+    const textboxColor = isDark ? 'rgb(255 255 255 / 50%)' : 'rgb(0 0 0/ 50%)';
+    const iconText = isDark ? 'Dark mode' : 'Light mode';
+  
+    navigation.style.backgroundColor = backgroundColor;
+    textBox.style.backgroundColor = textboxColor;
+    toggleIcon.children[0].textContent = iconText;
+    toggleIcon.children[1].classList.toggle('fa-sun');
+    toggleIcon.children[1].classList.toggle('fa-moon');
+    imageMode(isDark ? 'dark' : 'light');
+}
 
-function lightMode(){
-    navigation.style.backgroundColor = 'rgb(255 255 255 / 50%)';
-    textBox.style.backgroundColor = 'rgb(0 0 0 / 50%)';
-    toggleIcon.children[0].textContent = 'Light mode';
-    toggleIcon.children[1].classList.replace('fa-moon', 'fa-sun');
-    imageMode('light');
+function toggleDarkLightMode(isDark) {
+    setStyles(isDark);
 };
 
 function switchTheme(event) {
     if (event.target.checked) {
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
-        darkMode();
+        toggleDarkLightMode(true);
     } else {
         document.documentElement.setAttribute('data-theme', 'light');
         localStorage.setItem('theme', 'light');
-        lightMode();
+        toggleDarkLightMode(false);
     }
 };
 
@@ -49,6 +50,6 @@ if (currentTheme) {
     
     if (currentTheme === 'dark') {
         toggleSwitch.checked = true;
-        darkMode();
+        toggleDarkLightMode(true);
     } 
 }
